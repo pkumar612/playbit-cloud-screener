@@ -6,6 +6,7 @@ from screener.notify import (
     format_message,
     send_telegram,
     telegram_credentials_from_env,
+    _chunk,
 )
 
 RANKING = [("Technology", 8.4), ("Energy", 3.1), ("Healthcare", -2.0)]
@@ -103,3 +104,28 @@ def test_credentials_from_env_requires_both(monkeypatch):
     monkeypatch.delenv("TELEGRAM_CHAT_ID", raising=False)
     with pytest.raises(RuntimeError, match="TELEGRAM_BOT_TOKEN"):
         telegram_credentials_from_env()
+
+
+def test_chunk_splits_single_long_line():
+    """A single line longer than the limit must be split into valid chunks."""
+    long_line = "x" * 5000
+    chunks = _chunk(long_line, limit=4096)
+    # All chunks must be within limit
+    for chunk in chunks:
+        assert len(chunk) <= 4096
+    # Concatenating chunks must reproduce the input
+    assert "".join(chunks) == long_line
+
+
+def test_signals_from_unranked_sectors_still_appear():
+    """Signals in a sector absent from ranking must not be silently dropped."""
+    # Utilities is not in the ranking
+    signals = [
+        _signal(symbol="AAPL", sector="Technology"),
+        _signal(symbol="XYZ", sector="Utilities"),
+    ]
+    ranking = [("Technology", 8.4), ("Energy", 3.1)]
+    breadth = {"Technology": 72.5, "Energy": 41.0}
+    text = format_message(signals, ranking, breadth, ["Technology"], 900, 0)
+    # The Utilities signal must appear in the output
+    assert "XYZ" in text
