@@ -1,8 +1,11 @@
+import json
+
 import numpy as np
 import pandas as pd
+import pytest
 
 from screener.config import load_config
-from screener.main import MIN_CONVERGENCE_MULTIPLE, evaluate_symbol
+from screener.main import MIN_CONVERGENCE_MULTIPLE, evaluate_symbol, run
 
 
 def _daily(n, pattern):
@@ -67,3 +70,86 @@ def test_weekly_skipped_when_under_ema_length_bars():
 
 def test_convergence_multiple_is_three():
     assert MIN_CONVERGENCE_MULTIPLE == 3
+
+
+class _BoomError(Exception):
+    """A distinctive exception, so the test can't pass on a bare `except`."""
+
+
+def test_run_sends_failure_and_reraises_on_crash(monkeypatch, tmp_path):
+    """A crashed scan must alert AND fail the workflow. Firing the alert
+    without re-raising would leave the workflow green, and the user would
+    read the resulting silence as "no setups today" -- the worst outcome
+    this product can produce."""
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "test-token")
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "test-chat")
+
+    def _raise(min_market_cap):
+        raise _BoomError("universe fetch exploded")
+
+    monkeypatch.setattr("screener.main.fetch_universe", _raise)
+
+    failure_calls = []
+    monkeypatch.setattr(
+        "screener.main.send_failure",
+        lambda reason, token, chat_id: failure_calls.append((reason, token, chat_id)),
+    )
+
+    cfg = load_config("config.yaml")
+    with pytest.raises(_BoomError):
+        run(cfg, client=object(), state_path=tmp_path / "alerts.json")
+
+    assert len(failure_calls) == 1
+    reason, token, chat_id = failure_calls[0]
+    assert "universe fetch exploded" in reason
+    assert token == "test-token"
+    assert chat_id == "test-chat"
+
+
+class _QuietStubClient:
+    """Returns synthetic bars for whatever symbols it's asked for, so sector
+    ranking has data to work with, while the scanned universe stays empty."""
+
+    def daily_bars(self, symbols, start):
+        if not symbols:
+            return {}
+        idx = pd.date_range("2020-01-01", periods=300, freq="B")
+        closes = np.full(len(idx), 100.0)
+        frame = pd.DataFrame(
+            {
+                "open": closes,
+                "high": closes,
+                "low": closes,
+                "close": closes,
+                "volume": np.full(len(idx), 1_000_000),
+            },
+            index=idx,
+        )
+        return {symbol: frame.copy() for symbol in symbols}
+
+
+def test_run_stamps_last_run_even_with_no_signals(monkeypatch, tmp_path):
+    """A quiet market (zero new signals) must still write a fresh `last_run`
+    and be committed. If this ever became conditional on there being
+    signals, a quiet market would produce no commit, and after 60 days
+    GitHub silently disables the cron in a public repo -- the alerts would
+    just stop, with no error anywhere."""
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "test-token")
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "test-chat")
+    monkeypatch.setattr("screener.main.fetch_universe", lambda min_market_cap: [])
+
+    telegram_calls = []
+    monkeypatch.setattr(
+        "screener.main.send_telegram",
+        lambda text, token, chat_id: telegram_calls.append(text),
+    )
+
+    cfg = load_config("config.yaml")
+    state_path = tmp_path / "alerts.json"
+
+    exit_code = run(cfg, _QuietStubClient(), state_path=state_path)
+
+    assert exit_code == 0
+    assert telegram_calls == []
+    saved = json.loads(state_path.read_text())
+    assert saved["last_run"] is not None

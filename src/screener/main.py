@@ -9,7 +9,12 @@ import pandas as pd
 
 from screener.config import Config, load_config
 from screener.data import AlpacaClient
-from screener.indicators import cloud_bounds, mark_cloud_state, to_weekly
+from screener.indicators import (
+    cloud_bounds,
+    is_above_cloud,
+    mark_cloud_state,
+    to_weekly,
+)
 from screener.notify import (
     Signal,
     format_message,
@@ -70,15 +75,6 @@ def evaluate_symbol(
             )
         )
     return signals
-
-
-def is_above_cloud(daily: pd.DataFrame, length: int) -> bool | None:
-    """True/False when computable, None when history is insufficient."""
-    if len(daily) < length:
-        return None
-    marked = _prepare(daily, length)
-    last = marked.iloc[-1]
-    return bool(last["close"] > last["ema_top"])
 
 
 def run(cfg: Config, client: AlpacaClient, state_path: Path = STATE_PATH) -> int:

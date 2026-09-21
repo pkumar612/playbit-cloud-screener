@@ -1,7 +1,14 @@
+import numpy as np
 import pandas as pd
 import pytest
 
-from screener.indicators import cloud_bounds, ema, mark_cloud_state, to_weekly
+from screener.indicators import (
+    cloud_bounds,
+    ema,
+    is_above_cloud,
+    mark_cloud_state,
+    to_weekly,
+)
 
 
 def test_ema_seeds_from_first_value_not_sma():
@@ -133,6 +140,44 @@ def test_weekly_handles_holiday_shortened_week():
     assert len(weekly) == 1
     assert weekly["open"].iloc[0] == 11.0
     assert weekly["low"].iloc[0] == 8.0
+
+
+def _trending_bars(n, start, step):
+    """n daily OHLC bars whose close trends linearly from `start` by `step`/day."""
+    idx = pd.date_range("2026-01-01", periods=n, freq="D")
+    closes = start + step * np.arange(n, dtype=float)
+    return pd.DataFrame(
+        {
+            "open": closes,
+            "high": closes * 1.01,
+            "low": closes * 0.99,
+            "close": closes,
+        },
+        index=idx,
+    )
+
+
+def test_is_above_cloud_true_when_last_close_above_ema_top():
+    # A long, steady rally: the current close outruns the lagging EMA of
+    # past (lower) highs, so it ends up above the cloud top.
+    bars = _trending_bars(250, start=100.0, step=0.5)
+    assert is_above_cloud(bars, length=200) is True
+
+
+def test_is_above_cloud_false_when_last_close_below_ema_bot():
+    # A long, steady decline: the current close undershoots the lagging EMA
+    # of past (higher) closes, so it ends up below the cloud bottom, and
+    # therefore below the top too.
+    bars = _trending_bars(250, start=500.0, step=-0.5)
+    assert is_above_cloud(bars, length=200) is False
+
+
+def test_is_above_cloud_none_when_history_too_short():
+    # Fewer bars than `length` means the EMA cannot even be computed, so the
+    # symbol must be excluded from the breadth denominator rather than
+    # counted as a False reading.
+    bars = _trending_bars(50, start=100.0, step=0.5)
+    assert is_above_cloud(bars, length=200) is None
 
 
 def test_weekly_drops_empty_periods():

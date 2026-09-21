@@ -52,6 +52,20 @@ def mark_cloud_state(bars: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
+def is_above_cloud(bars: pd.DataFrame, length: int) -> bool | None:
+    """Whether the last bar closed above the cloud.
+
+    Returns None when history is too short to compute the EMA at all, so
+    callers can exclude the symbol rather than count it as a False reading,
+    which would understate sector breadth.
+    """
+    if len(bars) < length:
+        return None
+    marked = mark_cloud_state(cloud_bounds(bars, length))
+    last = marked.iloc[-1]
+    return bool(last["close"] > last["ema_top"])
+
+
 WEEKLY_AGGREGATION = {
     "open": "first",
     "high": "max",
