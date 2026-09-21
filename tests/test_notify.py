@@ -1,9 +1,11 @@
 import pytest
+import requests
 import responses
 
 from screener.notify import (
     Signal,
     format_message,
+    redact,
     send_telegram,
     telegram_credentials_from_env,
     _chunk,
@@ -23,6 +25,7 @@ def _signal(**overrides):
         ema_top=186.20,
         ema_bot=182.10,
         low_confidence=False,
+        bar_date="2026-09-21",
     )
     base.update(overrides)
     return Signal(**base)
@@ -129,3 +132,28 @@ def test_signals_from_unranked_sectors_still_appear():
     text = format_message(signals, ranking, breadth, ["Technology"], 900, 0)
     # The Utilities signal must appear in the output
     assert "XYZ" in text
+
+
+@responses.activate
+def test_send_telegram_redacts_the_token_from_http_errors():
+    """The token is embedded in the request URL, and requests quotes the URL
+    in its exception messages. The repository is public."""
+    token = "1234567:AAHsuperSecretBotToken"
+    responses.add(
+        responses.POST,
+        f"https://api.telegram.org/bot{token}/sendMessage",
+        json={"ok": False},
+        status=429,
+    )
+    with pytest.raises(requests.exceptions.HTTPError) as caught:
+        send_telegram("hello", token=token, chat_id="123")
+    assert token not in str(caught.value)
+    assert "***" in str(caught.value)
+
+
+def test_redact_replaces_every_occurrence():
+    assert redact("a SECRET b SECRET", "SECRET") == "a *** b ***"
+
+
+def test_redact_ignores_empty_secrets():
+    assert redact("unchanged", "", None or "") == "unchanged"

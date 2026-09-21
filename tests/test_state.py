@@ -2,7 +2,14 @@ import json
 
 import pandas as pd
 
-from screener.state import is_new_signal, load_state, save_state
+from screener.state import (
+    MAX_LOOKBACK_BARS,
+    is_new_signal,
+    load_state,
+    lookback_bars,
+    new_signal_index,
+    save_state,
+)
 
 
 def _bars(touch_flags):
@@ -46,7 +53,7 @@ def test_state_roundtrip(tmp_path):
     path = tmp_path / "alerts.json"
     state = {
         "last_run": "2026-09-21T21:30:00Z",
-        "alerts": {"AAPL:daily": {"last_alert_date": "2026-09-21", "last_touch_date": "2026-09-21"}},
+        "alerts": {"AAPL:daily": {"last_alert_date": "2026-09-21"}},
     }
     save_state(path, state)
     assert load_state(path) == state
@@ -77,3 +84,50 @@ def test_save_always_writes_last_run(tmp_path):
     save_state(path, {"last_run": "2026-09-21T21:30:00Z", "alerts": {}})
     written = json.loads(path.read_text())
     assert written["last_run"] == "2026-09-21T21:30:00Z"
+
+
+def test_new_signal_index_finds_an_entry_behind_the_last_bar():
+    """A missed run leaves the entry bar one or more bars back. Scanning only
+    the last bar loses it permanently, since the quiet-period precondition
+    can never be satisfied again."""
+    bars = _bars([False] * 5 + [True, False])
+    assert new_signal_index(bars, quiet_bars=5, lookback=1) is None
+    assert new_signal_index(bars, quiet_bars=5, lookback=2) == 5
+
+
+def test_new_signal_index_prefers_the_most_recent_entry():
+    """Only one alert date is remembered per symbol and timeframe, so an
+    older entry reported alongside a newer one would re-fire next run."""
+    bars = _bars([False] * 3 + [True] + [False] * 3 + [True])
+    assert new_signal_index(bars, quiet_bars=3, lookback=5) == 7
+
+
+def test_new_signal_index_is_empty_when_nothing_entered():
+    assert new_signal_index(_bars([True] * 8), quiet_bars=3, lookback=5) is None
+
+
+def test_lookback_is_one_on_a_punctual_run():
+    calendar = pd.date_range("2026-09-14", periods=5, freq="B")
+    assert lookback_bars(calendar, "2026-09-17T21:30:00+00:00") == 1
+
+
+def test_lookback_covers_every_missed_session():
+    calendar = pd.date_range("2026-09-14", periods=5, freq="B")
+    assert lookback_bars(calendar, "2026-09-15T21:30:00+00:00") == 3
+
+
+def test_lookback_is_capped():
+    calendar = pd.date_range("2026-06-01", periods=80, freq="B")
+    assert lookback_bars(calendar, "2026-06-02T21:30:00+00:00") == MAX_LOOKBACK_BARS
+
+
+def test_lookback_on_a_first_run_looks_at_the_last_bar_only():
+    """With no prior run there is nothing to catch up on, and scanning back
+    would alert on stale touches the user never asked about."""
+    calendar = pd.date_range("2026-09-14", periods=5, freq="B")
+    assert lookback_bars(calendar, None) == 1
+
+
+def test_lookback_on_an_unparseable_timestamp_catches_up_fully():
+    calendar = pd.date_range("2026-09-14", periods=5, freq="B")
+    assert lookback_bars(calendar, "not-a-date") == MAX_LOOKBACK_BARS

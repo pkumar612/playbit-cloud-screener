@@ -20,6 +20,30 @@ class Signal:
     ema_top: float
     ema_bot: float
     low_confidence: bool
+    # The date of the bar that fired, on that signal's own timeframe. A weekly
+    # bar is labelled by its week-ending Friday, so it is stable Monday to
+    # Friday -- which is exactly what deduplication needs.
+    bar_date: str
+
+
+def redact(text: str, *secrets: str) -> str:
+    """Strip credentials out of text bound for a log or a re-raise.
+
+    The bot token is embedded in every Telegram URL, so requests' own
+    exception messages carry it. This repository is public and its Actions
+    logs are world-readable.
+    """
+    for secret in secrets:
+        if secret:
+            text = text.replace(secret, "***")
+    return text
+
+
+def redact_exception(exc: BaseException, *secrets: str) -> None:
+    """Redact secrets from an exception's message, in place."""
+    exc.args = tuple(
+        redact(arg, *secrets) if isinstance(arg, str) else arg for arg in exc.args
+    )
 
 
 def _human_cap(market_cap: float) -> str:
@@ -111,10 +135,16 @@ def _chunk(text: str, limit: int = TELEGRAM_MAX_CHARS) -> list[str]:
 def send_telegram(text: str, token: str, chat_id: str) -> None:
     url = f"https://api.telegram.org/bot{token}/sendMessage"
     for part in _chunk(text):
-        response = requests.post(
-            url, json={"chat_id": chat_id, "text": part}, timeout=30
-        )
-        response.raise_for_status()
+        try:
+            response = requests.post(
+                url, json={"chat_id": chat_id, "text": part}, timeout=30
+            )
+            response.raise_for_status()
+        except Exception as exc:
+            # Both HTTPError and the connection errors quote the full URL,
+            # token included, in their message.
+            redact_exception(exc, token)
+            raise
 
 
 def send_failure(reason: str, token: str, chat_id: str) -> None:
