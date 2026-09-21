@@ -193,9 +193,20 @@ itself information.
 in winter — after the close year-round from a single cron expression, with no
 daylight-saving bug. `workflow_dispatch` is also enabled for manual runs.
 
-**Cost:** roughly 5 minutes per run, about 22 runs per month, ~110 minutes total
-against a free-tier allowance of 2,000 minutes/month on private repositories and
-unlimited on public ones.
+**Repository visibility:** public, chosen for unlimited Actions minutes. Nothing
+in the repository is sensitive; all credentials live in GitHub Secrets and never
+in tracked files.
+
+**Cost:** roughly 5 minutes per run, about 22 runs per month. Unlimited on a
+public repository.
+
+**Keeping the schedule alive.** GitHub automatically disables scheduled workflows
+in public repositories after 60 days with no repository activity, where activity
+means a commit — stars, issues and releases do not count. A quiet market could
+otherwise silently switch the screener off with no error surfaced. To guarantee
+activity, `state/alerts.json` always records a `last_run` timestamp, so every
+weekday run produces a real commit even when no alerts fired. No external
+keepalive action is required.
 
 **State persistence:** `state/alerts.json` is committed back to the repository by
 the workflow, which requires `permissions: contents: write`. The GitHub Actions
@@ -203,7 +214,10 @@ cache was rejected because it evicts after 7 days of inactivity, which would
 silently cause stale setups to re-alert.
 
 **Secrets:** `ALPACA_API_KEY`, `ALPACA_SECRET_KEY`, `TELEGRAM_BOT_TOKEN`,
-`TELEGRAM_CHAT_ID`.
+`TELEGRAM_CHAT_ID`, all stored as GitHub Actions secrets. Because the repository
+is public, no credential may ever be written to a tracked file, and `.env` is
+gitignored. Secrets are not exposed to workflows triggered by pull requests from
+forks, which does not affect the scheduled run.
 
 ## 10. Configuration
 
