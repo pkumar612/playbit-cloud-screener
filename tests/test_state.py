@@ -59,6 +59,13 @@ def test_corrupt_state_loads_as_empty(tmp_path):
     assert load_state(path) == {"last_run": None, "alerts": {}}
 
 
+def test_byte_corrupt_state_loads_as_empty(tmp_path):
+    """Byte-level corruption (non-UTF-8 files) must also load as empty."""
+    path = tmp_path / "alerts.json"
+    path.write_bytes(b"\xff\xfe\x00corrupt")
+    assert load_state(path) == {"last_run": None, "alerts": {}}
+
+
 def test_missing_state_loads_as_empty(tmp_path):
     assert load_state(tmp_path / "nope.json") == {"last_run": None, "alerts": {}}
 

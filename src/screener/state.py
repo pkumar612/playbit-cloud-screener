@@ -32,7 +32,7 @@ def load_state(path: str | Path) -> dict[str, Any]:
         return dict(EMPTY_STATE, alerts={})
     try:
         loaded = json.loads(path.read_text())
-    except (json.JSONDecodeError, OSError):
+    except (json.JSONDecodeError, UnicodeDecodeError, OSError):
         return dict(EMPTY_STATE, alerts={})
     if not isinstance(loaded, dict) or "alerts" not in loaded:
         return dict(EMPTY_STATE, alerts={})
