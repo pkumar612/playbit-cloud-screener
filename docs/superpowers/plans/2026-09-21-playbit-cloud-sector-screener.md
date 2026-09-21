@@ -927,6 +927,7 @@ git commit -m "feat: add sector relative-strength ranking and breadth"
       {"symbol": "VZ", "name": "Verizon", "marketCap": "170000000000.00", "sector": "Telecommunications", "industry": "Telecom"},
       {"symbol": "TINY", "name": "Tiny Corp", "marketCap": "500000000.00", "sector": "Technology", "industry": "Software"},
       {"symbol": "NOCAP", "name": "No Cap Corp", "marketCap": "", "sector": "Technology", "industry": "Software"},
+      {"symbol": "BADCAP", "name": "Bad Cap Corp", "marketCap": "N/A", "sector": "Technology", "industry": "Software"},
       {"symbol": "BRK/A", "name": "Berkshire Class A", "marketCap": "900000000000.00", "sector": "Finance", "industry": "Insurance"},
       {"symbol": "WEIRD", "name": "Unclassified Corp", "marketCap": "5000000000.00", "sector": "Miscellaneous", "industry": "Unknown"},
       {"symbol": "BLANK", "name": "Blank Sector Corp", "marketCap": "5000000000.00", "sector": "", "industry": "Unknown"}
@@ -943,6 +944,7 @@ import json
 from pathlib import Path
 
 import pytest
+import requests
 import responses
 
 from screener.universe import (
@@ -966,9 +968,21 @@ def test_filters_below_minimum_market_cap():
     assert "TINY" not in _symbols(tickers)
 
 
-def test_drops_rows_with_unparseable_market_cap():
+def test_drops_rows_with_empty_market_cap():
+    """An empty marketCap coerces to 0 and is filtered by the cap floor."""
     tickers = parse_universe(FIXTURE, min_market_cap=2_000_000_000)
     assert "NOCAP" not in _symbols(tickers)
+
+
+def test_drops_rows_with_unparseable_market_cap():
+    """A non-numeric marketCap raises inside the try and must be caught.
+
+    This is a different path from an empty string: "N/A" is truthy, so it
+    reaches float() and raises ValueError. Without this row the except
+    branch has no coverage at all.
+    """
+    tickers = parse_universe(FIXTURE, min_market_cap=2_000_000_000)
+    assert "BADCAP" not in _symbols(tickers)
 
 
 def test_drops_symbols_with_non_alpha_characters():
@@ -1019,7 +1033,7 @@ def test_fetch_universe_calls_the_endpoint():
 @responses.activate
 def test_fetch_universe_raises_on_http_error():
     responses.add(responses.GET, NASDAQ_SCREENER_URL, status=503)
-    with pytest.raises(Exception):
+    with pytest.raises(requests.exceptions.HTTPError):
         fetch_universe(min_market_cap=2_000_000_000)
 ```
 
