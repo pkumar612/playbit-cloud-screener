@@ -1,0 +1,26 @@
+min_market_cap: 2000000000
+top_n_sectors: 4
+ema_length: 200
+quiet_bars:
+  daily: 5
+  weekly: 3
+rs_weights:
+  "1m": 0.3
+  "3m": 0.4
+  "6m": 0.3
+timeframes:
+  - daily
+  - weekly
+benchmark: SPY
+sector_etfs:
+  Technology: XLK
+  Financial Services: XLF
+  Industrials: XLI
+  Communication Services: XLC
+  Healthcare: XLV
+  Consumer Cyclical: XLY
+  Energy: XLE
+  Consumer Defensive: XLP
+  Basic Materials: XLB
+  Real Estate: XLRE
+  Utilities: XLU

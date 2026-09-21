@@ -6,13 +6,13 @@
 
 **Architecture:** A single scheduled batch job on GitHub Actions. Pure-function modules (`indicators`, `sectors`, `state`) hold all the logic and are tested from fixtures with no network. I/O modules (`universe`, `data`, `notify`) are thin wrappers over HTTP. `main` orchestrates. Alert history persists in a JSON file committed back to the repo.
 
-**Tech Stack:** Python 3.11, pandas, requests, PyYAML, pytest, responses (HTTP stubbing), GitHub Actions.
+**Tech Stack:** Python 3.14, pandas, requests, PyYAML, pytest, responses (HTTP stubbing), GitHub Actions.
 
 **Spec:** `docs/superpowers/specs/2026-09-21-playbit-cloud-sector-screener-design.md`
 
 ## Global Constraints
 
-- **Python 3.11** in CI. Pin it in the workflow; do not rely on the runner default.
+- **Python 3.14** in CI. Pin it in the workflow; do not rely on the runner default. 3.14 is chosen because it is the only interpreter available on the development machine, and pandas 2.x has no wheels for it. Local and CI must run the same stack.
 - **EMA must use `.ewm(span=N, adjust=False).mean()`.** This matches Pine's `ta.ema`, which seeds from the first source value. Never seed with an SMA — that is the common advice online and it produces values that do not match TradingView.
 - **`ema_length` is 200** everywhere. Read it from config; never hardcode 200 in a module.
 - **No credentials in tracked files.** The repo is public. All secrets come from environment variables. `.env` is gitignored.
@@ -60,7 +60,7 @@ Tasks 1-5 build the pure core and are independently testable with zero credentia
 
 `requirements.txt`:
 ```
-pandas==2.2.3
+pandas==3.0.6
 requests==2.32.3
 PyYAML==6.0.2
 pytest==8.3.4
@@ -699,7 +699,7 @@ def load_state(path: str | Path) -> dict[str, Any]:
         return dict(EMPTY_STATE, alerts={})
     try:
         loaded = json.loads(path.read_text())
-    except (json.JSONDecodeError, OSError):
+    except (json.JSONDecodeError, UnicodeDecodeError, OSError):
         return dict(EMPTY_STATE, alerts={})
     if not isinstance(loaded, dict) or "alerts" not in loaded:
         return dict(EMPTY_STATE, alerts={})
@@ -927,6 +927,7 @@ git commit -m "feat: add sector relative-strength ranking and breadth"
       {"symbol": "VZ", "name": "Verizon", "marketCap": "170000000000.00", "sector": "Telecommunications", "industry": "Telecom"},
       {"symbol": "TINY", "name": "Tiny Corp", "marketCap": "500000000.00", "sector": "Technology", "industry": "Software"},
       {"symbol": "NOCAP", "name": "No Cap Corp", "marketCap": "", "sector": "Technology", "industry": "Software"},
+      {"symbol": "BADCAP", "name": "Bad Cap Corp", "marketCap": "N/A", "sector": "Technology", "industry": "Software"},
       {"symbol": "BRK/A", "name": "Berkshire Class A", "marketCap": "900000000000.00", "sector": "Finance", "industry": "Insurance"},
       {"symbol": "WEIRD", "name": "Unclassified Corp", "marketCap": "5000000000.00", "sector": "Miscellaneous", "industry": "Unknown"},
       {"symbol": "BLANK", "name": "Blank Sector Corp", "marketCap": "5000000000.00", "sector": "", "industry": "Unknown"}
@@ -943,6 +944,7 @@ import json
 from pathlib import Path
 
 import pytest
+import requests
 import responses
 
 from screener.universe import (
@@ -966,9 +968,21 @@ def test_filters_below_minimum_market_cap():
     assert "TINY" not in _symbols(tickers)
 
 
-def test_drops_rows_with_unparseable_market_cap():
+def test_drops_rows_with_empty_market_cap():
+    """An empty marketCap coerces to 0 and is filtered by the cap floor."""
     tickers = parse_universe(FIXTURE, min_market_cap=2_000_000_000)
     assert "NOCAP" not in _symbols(tickers)
+
+
+def test_drops_rows_with_unparseable_market_cap():
+    """A non-numeric marketCap raises inside the try and must be caught.
+
+    This is a different path from an empty string: "N/A" is truthy, so it
+    reaches float() and raises ValueError. Without this row the except
+    branch has no coverage at all.
+    """
+    tickers = parse_universe(FIXTURE, min_market_cap=2_000_000_000)
+    assert "BADCAP" not in _symbols(tickers)
 
 
 def test_drops_symbols_with_non_alpha_characters():
@@ -1019,7 +1033,7 @@ def test_fetch_universe_calls_the_endpoint():
 @responses.activate
 def test_fetch_universe_raises_on_http_error():
     responses.add(responses.GET, NASDAQ_SCREENER_URL, status=503)
-    with pytest.raises(Exception):
+    with pytest.raises(requests.exceptions.HTTPError):
         fetch_universe(min_market_cap=2_000_000_000)
 ```
 
@@ -1572,6 +1586,11 @@ def format_message(
 
         # Preserve ranking order so the strongest sector appears first.
         ordered = [s for s, _ in ranking if s in by_sector]
+        # A sector holding signals but absent from the ranking would otherwise
+        # vanish from the message with no error. Silently losing an alert is
+        # the one outcome this tool must never produce, so append the
+        # stragglers rather than drop them.
+        ordered += sorted(set(by_sector) - set(ordered))
         for sector in ordered:
             lines.append(f"— {sector} —")
             for signal in sorted(by_sector[sector], key=lambda s: s.symbol):
@@ -1596,8 +1615,20 @@ def _chunk(text: str, limit: int = TELEGRAM_MAX_CHARS) -> list[str]:
     chunks: list[str] = []
     current = ""
     for line in text.split("\n"):
+        # A single line longer than the limit cannot be accumulated into a
+        # valid chunk, so hard-split it. This is reachable through
+        # send_failure, whose reason string is arbitrary and need not contain
+        # newlines -- and that is the path where a delivery failure costs
+        # most, since it would leave the user with silence after a crash.
+        while len(line) > limit:
+            if current:
+                chunks.append(current)
+                current = ""
+            chunks.append(line[:limit])
+            line = line[limit:]
         if len(current) + len(line) + 1 > limit:
-            chunks.append(current)
+            if current:
+                chunks.append(current)
             current = line
         else:
             current = f"{current}\n{line}" if current else line
@@ -1702,11 +1733,13 @@ def test_pullback_into_cloud_after_long_rally_fires():
     cfg = load_config("config.yaml")
 
     def pattern(i):
-        # Long steady rally lifts price far above the cloud, then a sharp
-        # drop brings the final bar back into it.
-        if i < 880:
+        # A long steady rally lifts price far above the cloud, then the final
+        # bar gaps down into it. With ema_bot ~499 and ema_top ~504 at the
+        # end, a close of 502 gives low=496.98 and high=507.02, which overlaps
+        # the band, while the five preceding bars sit near 547 and are clear.
+        if i < 899:
             return 100.0 + i * 0.5
-        return 100.0 + 880 * 0.5 - (i - 879) * 40.0
+        return 502.0
 
     signals = evaluate_symbol("RALLY", "Technology", 5e9, _daily(900, pattern), cfg)
     assert any(s.timeframe == "daily" for s in signals)
@@ -2071,7 +2104,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.14"
           cache: pip
       - run: pip install -r requirements.txt
       - run: python -m pytest -v
@@ -2105,7 +2138,7 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.14"
           cache: pip
 
       - run: pip install -r requirements.txt
