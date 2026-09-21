@@ -6,13 +6,13 @@
 
 **Architecture:** A single scheduled batch job on GitHub Actions. Pure-function modules (`indicators`, `sectors`, `state`) hold all the logic and are tested from fixtures with no network. I/O modules (`universe`, `data`, `notify`) are thin wrappers over HTTP. `main` orchestrates. Alert history persists in a JSON file committed back to the repo.
 
-**Tech Stack:** Python 3.11, pandas, requests, PyYAML, pytest, responses (HTTP stubbing), GitHub Actions.
+**Tech Stack:** Python 3.14, pandas, requests, PyYAML, pytest, responses (HTTP stubbing), GitHub Actions.
 
 **Spec:** `docs/superpowers/specs/2026-09-21-playbit-cloud-sector-screener-design.md`
 
 ## Global Constraints
 
-- **Python 3.11** in CI. Pin it in the workflow; do not rely on the runner default.
+- **Python 3.14** in CI. Pin it in the workflow; do not rely on the runner default. 3.14 is chosen because it is the only interpreter available on the development machine, and pandas 2.x has no wheels for it. Local and CI must run the same stack.
 - **EMA must use `.ewm(span=N, adjust=False).mean()`.** This matches Pine's `ta.ema`, which seeds from the first source value. Never seed with an SMA — that is the common advice online and it produces values that do not match TradingView.
 - **`ema_length` is 200** everywhere. Read it from config; never hardcode 200 in a module.
 - **No credentials in tracked files.** The repo is public. All secrets come from environment variables. `.env` is gitignored.
@@ -60,7 +60,7 @@ Tasks 1-5 build the pure core and are independently testable with zero credentia
 
 `requirements.txt`:
 ```
-pandas==2.2.3
+pandas==3.0.6
 requests==2.32.3
 PyYAML==6.0.2
 pytest==8.3.4
@@ -2073,7 +2073,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.14"
           cache: pip
       - run: pip install -r requirements.txt
       - run: python -m pytest -v
@@ -2107,7 +2107,7 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.14"
           cache: pip
 
       - run: pip install -r requirements.txt
