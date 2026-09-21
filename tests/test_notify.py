@@ -1,6 +1,9 @@
+import traceback
+
 import pytest
 import requests
 import responses
+from urllib3.exceptions import MaxRetryError
 
 from screener.notify import (
     Signal,
@@ -148,6 +151,36 @@ def test_send_telegram_redacts_the_token_from_http_errors():
     with pytest.raises(requests.exceptions.HTTPError) as caught:
         send_telegram("hello", token=token, chat_id="123")
     assert token not in str(caught.value)
+    assert "***" in str(caught.value)
+
+
+def test_send_telegram_redacts_the_token_from_connection_errors(monkeypatch):
+    """`requests` builds connection failures as
+    `ConnectionError(MaxRetryError_object, request=...)`. The only arg is an
+    object, not a string, so a type-filtered redaction skips it while
+    `str(exc)` still renders the URL. The wrapped urllib3 error is also
+    chained, and Python prints a chained exception whatever the outer one
+    says -- both surfaces reach stderr in a public Actions log."""
+    token = "1234567:AAHsuperSecretBotToken"
+
+    def _refuse_connection(*args, **kwargs):
+        try:
+            raise MaxRetryError(
+                pool=None,
+                url=f"/bot{token}/sendMessage",
+                reason=Exception("[Errno 8] nodename nor servname provided"),
+            )
+        except MaxRetryError as retry_error:
+            raise requests.exceptions.ConnectionError(retry_error, request=None)
+
+    monkeypatch.setattr("screener.notify.requests.post", _refuse_connection)
+
+    with pytest.raises(requests.exceptions.ConnectionError) as caught:
+        send_telegram("hello", token=token, chat_id="123")
+
+    rendered = "".join(traceback.format_exception(caught.value))
+    assert token not in str(caught.value), "the token leaked into the message"
+    assert token not in rendered, "the token leaked into the printed traceback"
     assert "***" in str(caught.value)
 
 

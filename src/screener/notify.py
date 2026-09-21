@@ -40,10 +40,15 @@ def redact(text: str, *secrets: str) -> str:
 
 
 def redact_exception(exc: BaseException, *secrets: str) -> None:
-    """Redact secrets from an exception's message, in place."""
-    exc.args = tuple(
-        redact(arg, *secrets) if isinstance(arg, str) else arg for arg in exc.args
-    )
+    """Redact secrets from an exception's message, in place.
+
+    Every arg is stringified rather than filtered by type. `requests` builds
+    connection failures as `ConnectionError(MaxRetryError_object, request=…)`,
+    whose only arg is not a string -- yet `str(exc)` still renders that
+    object, URL and token included. Skipping non-strings made this a no-op
+    for exactly the family that carries the secret.
+    """
+    exc.args = tuple(redact(str(arg), *secrets) for arg in exc.args)
 
 
 def _human_cap(market_cap: float) -> str:
@@ -144,6 +149,11 @@ def send_telegram(text: str, token: str, chat_id: str) -> None:
             # Both HTTPError and the connection errors quote the full URL,
             # token included, in their message.
             redact_exception(exc, token)
+            # The wrapped urllib3 error carries the URL too, and Python prints
+            # a chained exception regardless of how clean the outer one is.
+            # Dropping the chain is the only way to keep it off stderr.
+            exc.__cause__ = None
+            exc.__suppress_context__ = True
             raise
 
 
