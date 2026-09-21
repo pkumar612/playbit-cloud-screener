@@ -50,3 +50,27 @@ def mark_cloud_state(bars: pd.DataFrame) -> pd.DataFrame:
     out["touch"] = (out["low"] <= out["ema_top"]) & (out["high"] >= out["ema_bot"])
     out["clear"] = ~out["touch"]
     return out
+
+
+WEEKLY_AGGREGATION = {
+    "open": "first",
+    "high": "max",
+    "low": "min",
+    "close": "last",
+    "volume": "sum",
+}
+
+
+def to_weekly(daily_bars: pd.DataFrame) -> pd.DataFrame:
+    """Resample daily bars to weekly bars labelled by week-ending Friday.
+
+    Weeks with no trading days are dropped rather than emitted as NaN rows,
+    which would otherwise poison the EMA.
+    """
+    columns = {k: v for k, v in WEEKLY_AGGREGATION.items() if k in daily_bars.columns}
+    weekly = daily_bars.resample("W-FRI").agg(columns)
+    # Drop weeks with no trading activity (all OHLC are NaN).
+    # Under pandas 3.0, dropna(how="all") doesn't work because volume=0, not NaN.
+    # So we check if any of the OHLC columns have non-NaN values.
+    ohlc_cols = [c for c in ["open", "high", "low", "close"] if c in weekly.columns]
+    return weekly[weekly[ohlc_cols].notna().any(axis=1)]

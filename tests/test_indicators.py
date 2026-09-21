@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from screener.indicators import cloud_bounds, ema, mark_cloud_state
+from screener.indicators import cloud_bounds, ema, mark_cloud_state, to_weekly
 
 
 def test_ema_seeds_from_first_value_not_sma():
@@ -90,3 +90,65 @@ def test_mark_cloud_state_requires_bounds():
     )
     with pytest.raises(ValueError, match="missing required columns"):
         mark_cloud_state(bars)
+
+
+def test_weekly_aggregates_ohlcv_correctly():
+    # Mon 2026-01-05 .. Fri 2026-01-09 is one full week
+    idx = pd.date_range("2026-01-05", periods=5, freq="D")
+    daily = pd.DataFrame(
+        {
+            "open": [10.0, 11.0, 12.0, 13.0, 14.0],
+            "high": [15.0, 16.0, 20.0, 17.0, 18.0],
+            "low": [9.0, 8.0, 11.0, 12.0, 13.0],
+            "close": [11.0, 12.0, 13.0, 14.0, 15.0],
+            "volume": [100, 200, 300, 400, 500],
+        },
+        index=idx,
+    )
+    weekly = to_weekly(daily)
+    assert len(weekly) == 1
+    assert weekly["open"].iloc[0] == 10.0   # first open of the week
+    assert weekly["high"].iloc[0] == 20.0   # max high
+    assert weekly["low"].iloc[0] == 8.0     # min low
+    assert weekly["close"].iloc[0] == 15.0  # last close
+    assert weekly["volume"].iloc[0] == 1500
+
+
+def test_weekly_handles_holiday_shortened_week():
+    """A week missing Monday must still produce exactly one weekly bar."""
+    idx = pd.DatetimeIndex(
+        ["2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09"]
+    )
+    daily = pd.DataFrame(
+        {
+            "open": [11.0, 12.0, 13.0, 14.0],
+            "high": [16.0, 20.0, 17.0, 18.0],
+            "low": [8.0, 11.0, 12.0, 13.0],
+            "close": [12.0, 13.0, 14.0, 15.0],
+            "volume": [200, 300, 400, 500],
+        },
+        index=idx,
+    )
+    weekly = to_weekly(daily)
+    assert len(weekly) == 1
+    assert weekly["open"].iloc[0] == 11.0
+    assert weekly["low"].iloc[0] == 8.0
+
+
+def test_weekly_drops_empty_periods():
+    """A gap of several weeks must not produce all-NaN weekly bars, which
+    would corrupt the EMA."""
+    idx = pd.DatetimeIndex(["2026-01-05", "2026-02-02"])
+    daily = pd.DataFrame(
+        {
+            "open": [10.0, 20.0],
+            "high": [11.0, 21.0],
+            "low": [9.0, 19.0],
+            "close": [10.5, 20.5],
+            "volume": [100, 200],
+        },
+        index=idx,
+    )
+    weekly = to_weekly(daily)
+    assert len(weekly) == 2
+    assert not weekly.isna().any().any()
