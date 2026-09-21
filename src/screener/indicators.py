@@ -30,3 +30,23 @@ def cloud_bounds(bars: pd.DataFrame, length: int) -> pd.DataFrame:
     out["ema_top"] = ema(out["high"], length)
     out["ema_bot"] = ema(out["close"], length)
     return out
+
+
+BOUND_COLUMNS = ("ema_top", "ema_bot")
+
+
+def mark_cloud_state(bars: pd.DataFrame) -> pd.DataFrame:
+    """Flag each bar as touching the cloud, or clear of it.
+
+    A bar touches when its range overlaps the band at all, inclusive of the
+    boundaries. A bar is clear when it lies entirely outside the band. These
+    are exact complements.
+    """
+    missing = [c for c in BOUND_COLUMNS if c not in bars.columns]
+    if missing:
+        raise ValueError(f"missing required columns: {', '.join(missing)}")
+
+    out = bars.copy()
+    out["touch"] = (out["low"] <= out["ema_top"]) & (out["high"] >= out["ema_bot"])
+    out["clear"] = ~out["touch"]
+    return out

@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from screener.indicators import cloud_bounds, ema
+from screener.indicators import cloud_bounds, ema, mark_cloud_state
 
 
 def test_ema_seeds_from_first_value_not_sma():
@@ -45,3 +45,48 @@ def test_cloud_bounds_rejects_missing_columns():
     bars = pd.DataFrame({"close": [1.0]}, index=pd.date_range("2026-01-01", periods=1))
     with pytest.raises(ValueError, match="missing required columns"):
         cloud_bounds(bars, length=2)
+
+
+def _frame(rows):
+    """rows: list of (low, high, ema_bot, ema_top)"""
+    return pd.DataFrame(
+        {
+            "open": [r[0] for r in rows],
+            "high": [r[1] for r in rows],
+            "low": [r[0] for r in rows],
+            "close": [r[1] for r in rows],
+            "ema_bot": [r[2] for r in rows],
+            "ema_top": [r[3] for r in rows],
+        },
+        index=pd.date_range("2026-01-01", periods=len(rows), freq="D"),
+    )
+
+
+def test_touch_and_clear_cover_every_geometry():
+    bars = _frame(
+        [
+            (120.0, 130.0, 100.0, 110.0),  # 0 fully above band
+            (70.0, 80.0, 100.0, 110.0),    # 1 fully below band
+            (105.0, 130.0, 100.0, 110.0),  # 2 wick down into band from above
+            (70.0, 105.0, 100.0, 110.0),   # 3 wick up into band from below
+            (70.0, 130.0, 100.0, 110.0),   # 4 engulfs the whole band
+            (103.0, 107.0, 100.0, 110.0),  # 5 entirely inside the band
+            (110.0, 130.0, 100.0, 110.0),  # 6 low exactly equals ema_top
+            (70.0, 100.0, 100.0, 110.0),   # 7 high exactly equals ema_bot
+        ]
+    )
+    result = mark_cloud_state(bars)
+    assert result["touch"].tolist() == [
+        False, False, True, True, True, True, True, True
+    ]
+    # clear is the exact complement of touch
+    assert (result["clear"] == ~result["touch"]).all()
+
+
+def test_mark_cloud_state_requires_bounds():
+    bars = pd.DataFrame(
+        {"open": [1.0], "high": [1.0], "low": [1.0], "close": [1.0]},
+        index=pd.date_range("2026-01-01", periods=1),
+    )
+    with pytest.raises(ValueError, match="missing required columns"):
+        mark_cloud_state(bars)
