@@ -1,0 +1,32 @@
+from __future__ import annotations
+
+import pandas as pd
+
+REQUIRED_COLUMNS = ("open", "high", "low", "close")
+
+
+def ema(series: pd.Series, length: int) -> pd.Series:
+    """Exponential moving average matching Pine Script's ta.ema.
+
+    Pine seeds from the first source value:
+        ema = alpha * src + (1 - alpha) * nz(ema[1]),  alpha = 2 / (length + 1)
+
+    pandas' ewm(adjust=False) seeds identically. Do NOT substitute an
+    SMA-seeded variant; it will not match TradingView.
+    """
+    return series.ewm(span=length, adjust=False).mean()
+
+
+def cloud_bounds(bars: pd.DataFrame, length: int) -> pd.DataFrame:
+    """Add the PlayBit cloud bounds to an OHLC frame.
+
+    The cloud is the band between EMA(high, length) and EMA(close, length).
+    """
+    missing = [c for c in REQUIRED_COLUMNS if c not in bars.columns]
+    if missing:
+        raise ValueError(f"missing required columns: {', '.join(missing)}")
+
+    out = bars.copy()
+    out["ema_top"] = ema(out["high"], length)
+    out["ema_bot"] = ema(out["close"], length)
+    return out
