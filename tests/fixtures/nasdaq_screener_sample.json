@@ -1,0 +1,17 @@
+{
+  "data": {
+    "rows": [
+      {"symbol": "AAPL", "name": "Apple Inc.", "marketCap": "3500000000000.00", "sector": "Technology", "industry": "Computer Manufacturing"},
+      {"symbol": "JPM", "name": "JPMorgan Chase", "marketCap": "700000000000.00", "sector": "Finance", "industry": "Major Banks"},
+      {"symbol": "TGT", "name": "Target Corp", "marketCap": "60000000000.00", "sector": "Consumer Discretionary", "industry": "Retail"},
+      {"symbol": "KO", "name": "Coca-Cola", "marketCap": "280000000000.00", "sector": "Consumer Staples", "industry": "Beverages"},
+      {"symbol": "UNH", "name": "UnitedHealth", "marketCap": "500000000000.00", "sector": "Health Care", "industry": "Medical Specialities"},
+      {"symbol": "VZ", "name": "Verizon", "marketCap": "170000000000.00", "sector": "Telecommunications", "industry": "Telecom"},
+      {"symbol": "TINY", "name": "Tiny Corp", "marketCap": "500000000.00", "sector": "Technology", "industry": "Software"},
+      {"symbol": "NOCAP", "name": "No Cap Corp", "marketCap": "", "sector": "Technology", "industry": "Software"},
+      {"symbol": "BRK/A", "name": "Berkshire Class A", "marketCap": "900000000000.00", "sector": "Finance", "industry": "Insurance"},
+      {"symbol": "WEIRD", "name": "Unclassified Corp", "marketCap": "5000000000.00", "sector": "Miscellaneous", "industry": "Unknown"},
+      {"symbol": "BLANK", "name": "Blank Sector Corp", "marketCap": "5000000000.00", "sector": "", "industry": "Unknown"}
+    ]
+  }
+}
