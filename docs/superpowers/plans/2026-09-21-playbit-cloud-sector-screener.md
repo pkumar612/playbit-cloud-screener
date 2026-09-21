@@ -1586,6 +1586,11 @@ def format_message(
 
         # Preserve ranking order so the strongest sector appears first.
         ordered = [s for s, _ in ranking if s in by_sector]
+        # A sector holding signals but absent from the ranking would otherwise
+        # vanish from the message with no error. Silently losing an alert is
+        # the one outcome this tool must never produce, so append the
+        # stragglers rather than drop them.
+        ordered += sorted(set(by_sector) - set(ordered))
         for sector in ordered:
             lines.append(f"— {sector} —")
             for signal in sorted(by_sector[sector], key=lambda s: s.symbol):
@@ -1610,8 +1615,20 @@ def _chunk(text: str, limit: int = TELEGRAM_MAX_CHARS) -> list[str]:
     chunks: list[str] = []
     current = ""
     for line in text.split("\n"):
+        # A single line longer than the limit cannot be accumulated into a
+        # valid chunk, so hard-split it. This is reachable through
+        # send_failure, whose reason string is arbitrary and need not contain
+        # newlines -- and that is the path where a delivery failure costs
+        # most, since it would leave the user with silence after a crash.
+        while len(line) > limit:
+            if current:
+                chunks.append(current)
+                current = ""
+            chunks.append(line[:limit])
+            line = line[limit:]
         if len(current) + len(line) + 1 > limit:
-            chunks.append(current)
+            if current:
+                chunks.append(current)
             current = line
         else:
             current = f"{current}\n{line}" if current else line
