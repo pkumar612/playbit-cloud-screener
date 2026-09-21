@@ -1702,11 +1702,13 @@ def test_pullback_into_cloud_after_long_rally_fires():
     cfg = load_config("config.yaml")
 
     def pattern(i):
-        # Long steady rally lifts price far above the cloud, then a sharp
-        # drop brings the final bar back into it.
-        if i < 880:
+        # A long steady rally lifts price far above the cloud, then the final
+        # bar gaps down into it. With ema_bot ~499 and ema_top ~504 at the
+        # end, a close of 502 gives low=496.98 and high=507.02, which overlaps
+        # the band, while the five preceding bars sit near 547 and are clear.
+        if i < 899:
             return 100.0 + i * 0.5
-        return 100.0 + 880 * 0.5 - (i - 879) * 40.0
+        return 502.0
 
     signals = evaluate_symbol("RALLY", "Technology", 5e9, _daily(900, pattern), cfg)
     assert any(s.timeframe == "daily" for s in signals)
