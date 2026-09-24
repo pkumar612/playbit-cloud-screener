@@ -6,6 +6,9 @@
     "ACAD:daily": {
       "last_alert_date": "2026-09-23"
     },
+    "ACAD:weekly": {
+      "last_alert_date": "2026-09-25"
+    },
     "ACIW:daily": {
       "last_alert_date": "2026-09-22"
     },
@@ -36,6 +39,9 @@
     "BHC:daily": {
       "last_alert_date": "2026-09-23"
     },
+    "BILL:daily": {
+      "last_alert_date": "2026-09-24"
+    },
     "BTU:weekly": {
       "last_alert_date": "2026-09-25"
     },
@@ -60,6 +66,9 @@
     "DNLI:daily": {
       "last_alert_date": "2026-09-22"
     },
+    "DVA:daily": {
+      "last_alert_date": "2026-09-24"
+    },
     "ERAS:daily": {
       "last_alert_date": "2026-09-23"
     },
@@ -71,6 +80,9 @@
     },
     "GEN:daily": {
       "last_alert_date": "2026-09-23"
+    },
+    "GEN:weekly": {
+      "last_alert_date": "2026-09-25"
     },
     "GFS:weekly": {
       "last_alert_date": "2026-09-25"
@@ -87,14 +99,23 @@
     "HIMS:daily": {
       "last_alert_date": "2026-09-22"
     },
+    "IBM:weekly": {
+      "last_alert_date": "2026-09-25"
+    },
     "ICHR:daily": {
       "last_alert_date": "2026-09-23"
+    },
+    "IMNM:daily": {
+      "last_alert_date": "2026-09-24"
     },
     "INOD:daily": {
       "last_alert_date": "2026-09-22"
     },
     "IONQ:daily": {
       "last_alert_date": "2026-09-23"
+    },
+    "IRON:weekly": {
+      "last_alert_date": "2026-09-25"
     },
     "MDGL:daily": {
       "last_alert_date": "2026-09-23"
@@ -174,6 +195,9 @@
     "TNGX:daily": {
       "last_alert_date": "2026-09-21"
     },
+    "U:weekly": {
+      "last_alert_date": "2026-09-25"
+    },
     "UCTT:daily": {
       "last_alert_date": "2026-09-21"
     },
@@ -192,6 +216,9 @@
     "WBI:daily": {
       "last_alert_date": "2026-09-21"
     },
+    "WRBY:daily": {
+      "last_alert_date": "2026-09-24"
+    },
     "WULF:daily": {
       "last_alert_date": "2026-09-21"
     },
@@ -202,9 +229,9 @@
       "last_alert_date": "2026-09-25"
     }
   },
-  "last_run": "2026-09-23T23:54:19.932438+00:00",
+  "last_run": "2026-09-24T23:59:39.774732+00:00",
   "last_scan": {
-    "scanned": 669,
-    "skipped": 26
+    "scanned": 670,
+    "skipped": 25
   }
 }
