@@ -3,6 +3,9 @@
     "AAOI:daily": {
       "last_alert_date": "2026-10-01"
     },
+    "ABT:daily": {
+      "last_alert_date": "2026-10-15"
+    },
     "ACAD:daily": {
       "last_alert_date": "2026-09-23"
     },
@@ -20,6 +23,9 @@
     },
     "ACMR:daily": {
       "last_alert_date": "2026-10-08"
+    },
+    "ADSK:daily": {
+      "last_alert_date": "2026-10-15"
     },
     "ADUS:daily": {
       "last_alert_date": "2026-10-01"
@@ -47,6 +53,9 @@
     },
     "AMX:weekly": {
       "last_alert_date": "2026-10-02"
+    },
+    "APLD:weekly": {
+      "last_alert_date": "2026-10-16"
     },
     "APPF:daily": {
       "last_alert_date": "2026-09-28"
@@ -93,11 +102,20 @@
     "BCRX:daily": {
       "last_alert_date": "2026-09-22"
     },
+    "BE:daily": {
+      "last_alert_date": "2026-10-15"
+    },
     "BEKE:daily": {
       "last_alert_date": "2026-09-28"
     },
     "BHC:daily": {
       "last_alert_date": "2026-09-23"
+    },
+    "BHE:daily": {
+      "last_alert_date": "2026-10-15"
+    },
+    "BHP:daily": {
+      "last_alert_date": "2026-10-15"
     },
     "BILL:daily": {
       "last_alert_date": "2026-10-05"
@@ -106,7 +124,7 @@
       "last_alert_date": "2026-10-12"
     },
     "BLLN:daily": {
-      "last_alert_date": "2026-09-30"
+      "last_alert_date": "2026-10-15"
     },
     "BLTE:daily": {
       "last_alert_date": "2026-10-06"
@@ -128,6 +146,9 @@
     },
     "BSY:daily": {
       "last_alert_date": "2026-10-06"
+    },
+    "BTI:daily": {
+      "last_alert_date": "2026-10-15"
     },
     "BTU:weekly": {
       "last_alert_date": "2026-09-25"
@@ -186,6 +207,9 @@
     "CNX:weekly": {
       "last_alert_date": "2026-10-02"
     },
+    "COCO:daily": {
+      "last_alert_date": "2026-10-15"
+    },
     "COHR:daily": {
       "last_alert_date": "2026-10-12"
     },
@@ -200,6 +224,9 @@
     },
     "CRDO:daily": {
       "last_alert_date": "2026-10-13"
+    },
+    "CRGY:weekly": {
+      "last_alert_date": "2026-10-16"
     },
     "CRWV:daily": {
       "last_alert_date": "2026-10-02"
@@ -258,6 +285,9 @@
     "ERAS:daily": {
       "last_alert_date": "2026-09-23"
     },
+    "ERIC:daily": {
+      "last_alert_date": "2026-10-15"
+    },
     "ERIC:weekly": {
       "last_alert_date": "2026-10-02"
     },
@@ -285,14 +315,23 @@
     "FIBK:weekly": {
       "last_alert_date": "2026-10-09"
     },
+    "FIZZ:daily": {
+      "last_alert_date": "2026-10-15"
+    },
     "FLEX:daily": {
       "last_alert_date": "2026-10-14"
+    },
+    "FORM:daily": {
+      "last_alert_date": "2026-10-15"
     },
     "GDDY:daily": {
       "last_alert_date": "2026-10-08"
     },
     "GE:daily": {
       "last_alert_date": "2026-09-21"
+    },
+    "GEHC:daily": {
+      "last_alert_date": "2026-10-15"
     },
     "GEN:daily": {
       "last_alert_date": "2026-09-23"
@@ -396,6 +435,9 @@
     "INFQ:daily": {
       "last_alert_date": "2026-09-30"
     },
+    "INGM:daily": {
+      "last_alert_date": "2026-10-15"
+    },
     "INOD:daily": {
       "last_alert_date": "2026-09-30"
     },
@@ -432,14 +474,26 @@
     "KLIC:daily": {
       "last_alert_date": "2026-10-13"
     },
+    "KN:daily": {
+      "last_alert_date": "2026-10-15"
+    },
     "KR:daily": {
       "last_alert_date": "2026-10-12"
+    },
+    "LASR:weekly": {
+      "last_alert_date": "2026-10-16"
+    },
+    "LFUS:daily": {
+      "last_alert_date": "2026-10-15"
     },
     "LQDA:daily": {
       "last_alert_date": "2026-09-30"
     },
     "LQDA:weekly": {
       "last_alert_date": "2026-10-02"
+    },
+    "LRCX:daily": {
+      "last_alert_date": "2026-10-15"
     },
     "LSCC:daily": {
       "last_alert_date": "2026-10-14"
@@ -454,13 +508,16 @@
       "last_alert_date": "2026-09-25"
     },
     "MDB:daily": {
-      "last_alert_date": "2026-09-28"
+      "last_alert_date": "2026-10-15"
     },
     "MDB:weekly": {
       "last_alert_date": "2026-10-02"
     },
     "MDGL:daily": {
       "last_alert_date": "2026-09-23"
+    },
+    "MDLZ:weekly": {
+      "last_alert_date": "2026-10-16"
     },
     "MDT:daily": {
       "last_alert_date": "2026-09-23"
@@ -497,6 +554,9 @@
     },
     "MTDR:weekly": {
       "last_alert_date": "2026-09-25"
+    },
+    "MTSI:daily": {
+      "last_alert_date": "2026-10-15"
     },
     "MUR:daily": {
       "last_alert_date": "2026-09-22"
@@ -558,6 +618,9 @@
     "ON:daily": {
       "last_alert_date": "2026-10-01"
     },
+    "ONDS:weekly": {
+      "last_alert_date": "2026-10-16"
+    },
     "OPCH:weekly": {
       "last_alert_date": "2026-10-09"
     },
@@ -591,11 +654,20 @@
     "PEN:daily": {
       "last_alert_date": "2026-10-02"
     },
+    "PFE:weekly": {
+      "last_alert_date": "2026-10-16"
+    },
     "PHVS:daily": {
       "last_alert_date": "2026-09-28"
     },
+    "PINS:daily": {
+      "last_alert_date": "2026-10-15"
+    },
     "PL:weekly": {
       "last_alert_date": "2026-10-16"
+    },
+    "PLXS:daily": {
+      "last_alert_date": "2026-10-15"
     },
     "POWL:daily": {
       "last_alert_date": "2026-10-02"
@@ -608,6 +680,9 @@
     },
     "PRI:daily": {
       "last_alert_date": "2026-09-21"
+    },
+    "PRVA:daily": {
+      "last_alert_date": "2026-10-15"
     },
     "PTC:daily": {
       "last_alert_date": "2026-10-01"
@@ -717,6 +792,9 @@
     "SNAP:daily": {
       "last_alert_date": "2026-10-06"
     },
+    "SNDK:daily": {
+      "last_alert_date": "2026-10-15"
+    },
     "SNPS:daily": {
       "last_alert_date": "2026-09-25"
     },
@@ -725,6 +803,9 @@
     },
     "SSNC:daily": {
       "last_alert_date": "2026-09-30"
+    },
+    "STE:daily": {
+      "last_alert_date": "2026-10-15"
     },
     "STE:weekly": {
       "last_alert_date": "2026-10-16"
@@ -756,6 +837,9 @@
     "TEO:daily": {
       "last_alert_date": "2026-09-25"
     },
+    "TFX:daily": {
+      "last_alert_date": "2026-10-15"
+    },
     "TLX:daily": {
       "last_alert_date": "2026-10-01"
     },
@@ -765,14 +849,26 @@
     "TOST:daily": {
       "last_alert_date": "2026-10-09"
     },
+    "TOST:weekly": {
+      "last_alert_date": "2026-10-16"
+    },
     "TPL:weekly": {
       "last_alert_date": "2026-10-02"
+    },
+    "TR:daily": {
+      "last_alert_date": "2026-10-15"
     },
     "TRNO:daily": {
       "last_alert_date": "2026-10-09"
     },
+    "TSEM:daily": {
+      "last_alert_date": "2026-10-15"
+    },
     "TTWO:weekly": {
       "last_alert_date": "2026-10-02"
+    },
+    "TYL:daily": {
+      "last_alert_date": "2026-10-15"
     },
     "U:weekly": {
       "last_alert_date": "2026-09-25"
@@ -786,6 +882,9 @@
     "UI:daily": {
       "last_alert_date": "2026-10-02"
     },
+    "UNH:weekly": {
+      "last_alert_date": "2026-10-16"
+    },
     "UTHR:daily": {
       "last_alert_date": "2026-09-30"
     },
@@ -794,6 +893,12 @@
     },
     "VECO:daily": {
       "last_alert_date": "2026-10-13"
+    },
+    "VIAV:daily": {
+      "last_alert_date": "2026-10-15"
+    },
+    "VICR:daily": {
+      "last_alert_date": "2026-10-15"
     },
     "VIST:daily": {
       "last_alert_date": "2026-09-29"
@@ -837,6 +942,9 @@
     "WGS:daily": {
       "last_alert_date": "2026-09-29"
     },
+    "WIX:daily": {
+      "last_alert_date": "2026-10-15"
+    },
     "WK:daily": {
       "last_alert_date": "2026-09-28"
     },
@@ -852,6 +960,9 @@
     "XYZ:daily": {
       "last_alert_date": "2026-09-23"
     },
+    "YOU:daily": {
+      "last_alert_date": "2026-10-15"
+    },
     "YOU:weekly": {
       "last_alert_date": "2026-09-25"
     },
@@ -862,9 +973,9 @@
       "last_alert_date": "2026-10-13"
     }
   },
-  "last_run": "2026-10-15T00:03:23.805793+00:00",
+  "last_run": "2026-10-15T23:47:29.792675+00:00",
   "last_scan": {
-    "scanned": 667,
+    "scanned": 665,
     "skipped": 21
   }
 }
