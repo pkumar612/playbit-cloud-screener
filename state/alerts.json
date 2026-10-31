@@ -66,6 +66,9 @@
     "ALAB:daily": {
       "last_alert_date": "2026-10-20"
     },
+    "ALC:daily": {
+      "last_alert_date": "2026-10-30"
+    },
     "ALGM:daily": {
       "last_alert_date": "2026-10-02"
     },
@@ -138,11 +141,17 @@
     "AXSM:daily": {
       "last_alert_date": "2026-09-23"
     },
+    "AXSM:weekly": {
+      "last_alert_date": "2026-10-30"
+    },
     "AXTI:daily": {
       "last_alert_date": "2026-10-12"
     },
     "AZN:daily": {
       "last_alert_date": "2026-10-01"
+    },
+    "BAX:daily": {
+      "last_alert_date": "2026-10-30"
     },
     "BBIO:daily": {
       "last_alert_date": "2026-10-28"
@@ -159,6 +168,9 @@
     "BEAM:daily": {
       "last_alert_date": "2026-10-28"
     },
+    "BEAM:weekly": {
+      "last_alert_date": "2026-10-30"
+    },
     "BEKE:daily": {
       "last_alert_date": "2026-09-28"
     },
@@ -167,6 +179,9 @@
     },
     "BHC:daily": {
       "last_alert_date": "2026-09-23"
+    },
+    "BHC:weekly": {
+      "last_alert_date": "2026-10-30"
     },
     "BHE:daily": {
       "last_alert_date": "2026-10-15"
@@ -196,7 +211,7 @@
       "last_alert_date": "2026-10-02"
     },
     "BMRN:daily": {
-      "last_alert_date": "2026-09-25"
+      "last_alert_date": "2026-10-30"
     },
     "BMY:daily": {
       "last_alert_date": "2026-10-05"
@@ -556,7 +571,7 @@
       "last_alert_date": "2026-10-16"
     },
     "IMO:daily": {
-      "last_alert_date": "2026-10-07"
+      "last_alert_date": "2026-10-30"
     },
     "IMVT:daily": {
       "last_alert_date": "2026-09-25"
@@ -600,6 +615,9 @@
     "IOT:daily": {
       "last_alert_date": "2026-09-28"
     },
+    "IOVA:weekly": {
+      "last_alert_date": "2026-10-30"
+    },
     "IRON:daily": {
       "last_alert_date": "2026-10-19"
     },
@@ -613,7 +631,7 @@
       "last_alert_date": "2026-10-23"
     },
     "ISRG:daily": {
-      "last_alert_date": "2026-10-12"
+      "last_alert_date": "2026-10-30"
     },
     "ISRG:weekly": {
       "last_alert_date": "2026-10-09"
@@ -665,6 +683,9 @@
     },
     "LOGI:daily": {
       "last_alert_date": "2026-10-28"
+    },
+    "LPX:daily": {
+      "last_alert_date": "2026-10-30"
     },
     "LQDA:daily": {
       "last_alert_date": "2026-09-30"
@@ -765,6 +786,9 @@
     "NBIS:daily": {
       "last_alert_date": "2026-10-28"
     },
+    "NBIX:daily": {
+      "last_alert_date": "2026-10-30"
+    },
     "NBIX:weekly": {
       "last_alert_date": "2026-10-16"
     },
@@ -806,6 +830,9 @@
     },
     "NVS:daily": {
       "last_alert_date": "2026-10-14"
+    },
+    "NVST:daily": {
+      "last_alert_date": "2026-10-30"
     },
     "NVTS:daily": {
       "last_alert_date": "2026-10-02"
@@ -973,7 +1000,7 @@
       "last_alert_date": "2026-10-09"
     },
     "RMD:daily": {
-      "last_alert_date": "2026-10-06"
+      "last_alert_date": "2026-10-30"
     },
     "RRC:daily": {
       "last_alert_date": "2026-10-06"
@@ -1026,6 +1053,9 @@
     "SLNHP:weekly": {
       "last_alert_date": "2026-10-23"
     },
+    "SLS:daily": {
+      "last_alert_date": "2026-10-30"
+    },
     "SMCI:daily": {
       "last_alert_date": "2026-10-14"
     },
@@ -1056,11 +1086,17 @@
     "SNPS:daily": {
       "last_alert_date": "2026-10-16"
     },
+    "SNY:daily": {
+      "last_alert_date": "2026-10-30"
+    },
     "SOBO:daily": {
       "last_alert_date": "2026-09-23"
     },
     "SOLV:daily": {
       "last_alert_date": "2026-10-28"
+    },
+    "SONO:weekly": {
+      "last_alert_date": "2026-10-30"
     },
     "SSNC:daily": {
       "last_alert_date": "2026-09-30"
@@ -1136,6 +1172,9 @@
     },
     "TSEM:daily": {
       "last_alert_date": "2026-10-28"
+    },
+    "TSN:daily": {
+      "last_alert_date": "2026-10-30"
     },
     "TTAN:daily": {
       "last_alert_date": "2026-10-19"
@@ -1276,15 +1315,15 @@
       "last_alert_date": "2026-10-26"
     },
     "ZBH:daily": {
-      "last_alert_date": "2026-10-13"
+      "last_alert_date": "2026-10-30"
     },
     "ZLAB:daily": {
       "last_alert_date": "2026-10-13"
     }
   },
-  "last_run": "2026-10-29T01:11:12.412061+00:00",
+  "last_run": "2026-10-31T00:58:52.737333+00:00",
   "last_scan": {
-    "scanned": 671,
-    "skipped": 22
+    "scanned": 446,
+    "skipped": 13
   }
 }
