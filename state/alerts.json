@@ -19,7 +19,7 @@
       "last_alert_date": "2026-09-23"
     },
     "ACAD:weekly": {
-      "last_alert_date": "2026-09-25"
+      "last_alert_date": "2026-11-06"
     },
     "ACHC:daily": {
       "last_alert_date": "2026-09-28"
@@ -57,11 +57,17 @@
     "ADUS:daily": {
       "last_alert_date": "2026-10-01"
     },
+    "AEG:daily": {
+      "last_alert_date": "2026-11-05"
+    },
     "AEIS:daily": {
       "last_alert_date": "2026-09-25"
     },
     "AGIO:weekly": {
       "last_alert_date": "2026-10-23"
+    },
+    "AGM:daily": {
+      "last_alert_date": "2026-11-05"
     },
     "AIG:daily": {
       "last_alert_date": "2026-11-04"
@@ -114,11 +120,14 @@
     "APLD:weekly": {
       "last_alert_date": "2026-10-16"
     },
+    "APO:daily": {
+      "last_alert_date": "2026-11-05"
+    },
     "APPF:daily": {
       "last_alert_date": "2026-10-27"
     },
     "AR:daily": {
-      "last_alert_date": "2026-10-07"
+      "last_alert_date": "2026-11-05"
     },
     "ARGX:daily": {
       "last_alert_date": "2026-10-20"
@@ -130,13 +139,16 @@
       "last_alert_date": "2026-10-28"
     },
     "ARQT:daily": {
-      "last_alert_date": "2026-10-05"
+      "last_alert_date": "2026-11-05"
     },
     "ASML:daily": {
       "last_alert_date": "2026-10-22"
     },
     "ASND:daily": {
       "last_alert_date": "2026-10-09"
+    },
+    "AUB:daily": {
+      "last_alert_date": "2026-11-05"
     },
     "AUR:daily": {
       "last_alert_date": "2026-10-06"
@@ -192,6 +204,9 @@
     "BEKE:daily": {
       "last_alert_date": "2026-09-28"
     },
+    "BEKE:weekly": {
+      "last_alert_date": "2026-11-06"
+    },
     "BG:weekly": {
       "last_alert_date": "2026-10-23"
     },
@@ -208,7 +223,7 @@
       "last_alert_date": "2026-10-15"
     },
     "BHVN:daily": {
-      "last_alert_date": "2026-10-26"
+      "last_alert_date": "2026-11-05"
     },
     "BILL:daily": {
       "last_alert_date": "2026-10-05"
@@ -223,7 +238,7 @@
       "last_alert_date": "2026-10-28"
     },
     "BLLN:daily": {
-      "last_alert_date": "2026-10-15"
+      "last_alert_date": "2026-11-05"
     },
     "BLTE:daily": {
       "last_alert_date": "2026-10-06"
@@ -264,11 +279,20 @@
     "BTU:weekly": {
       "last_alert_date": "2026-09-25"
     },
+    "BX:daily": {
+      "last_alert_date": "2026-11-05"
+    },
     "BZ:daily": {
       "last_alert_date": "2026-10-12"
     },
     "CACC:daily": {
       "last_alert_date": "2026-10-09"
+    },
+    "CAG:daily": {
+      "last_alert_date": "2026-11-05"
+    },
+    "CAI:daily": {
+      "last_alert_date": "2026-11-05"
     },
     "CARG:weekly": {
       "last_alert_date": "2026-09-25"
@@ -293,6 +317,9 @@
     },
     "CELC:weekly": {
       "last_alert_date": "2026-10-16"
+    },
+    "CELH:daily": {
+      "last_alert_date": "2026-11-05"
     },
     "CGON:daily": {
       "last_alert_date": "2026-10-21"
@@ -393,6 +420,9 @@
     "CVS:weekly": {
       "last_alert_date": "2026-11-06"
     },
+    "CYTK:weekly": {
+      "last_alert_date": "2026-11-06"
+    },
     "DAR:daily": {
       "last_alert_date": "2026-10-22"
     },
@@ -432,11 +462,17 @@
     "DVN:daily": {
       "last_alert_date": "2026-11-04"
     },
+    "DVN:weekly": {
+      "last_alert_date": "2026-11-06"
+    },
     "DXCM:daily": {
       "last_alert_date": "2026-10-22"
     },
     "DYN:weekly": {
       "last_alert_date": "2026-11-06"
+    },
+    "EEFT:daily": {
+      "last_alert_date": "2026-11-05"
     },
     "ELAN:daily": {
       "last_alert_date": "2026-10-06"
@@ -473,6 +509,9 @@
     },
     "ERIC:weekly": {
       "last_alert_date": "2026-10-02"
+    },
+    "ERIE:weekly": {
+      "last_alert_date": "2026-11-06"
     },
     "ETN:daily": {
       "last_alert_date": "2026-10-28"
@@ -516,8 +555,14 @@
     "FLEX:daily": {
       "last_alert_date": "2026-10-14"
     },
+    "FNB:daily": {
+      "last_alert_date": "2026-11-05"
+    },
     "FORM:daily": {
       "last_alert_date": "2026-10-15"
+    },
+    "FSK:daily": {
+      "last_alert_date": "2026-11-05"
     },
     "FSV:weekly": {
       "last_alert_date": "2026-11-06"
@@ -636,6 +681,12 @@
     "HUBS:daily": {
       "last_alert_date": "2026-10-22"
     },
+    "HUT:weekly": {
+      "last_alert_date": "2026-11-06"
+    },
+    "HWC:daily": {
+      "last_alert_date": "2026-11-05"
+    },
     "IBM:daily": {
       "last_alert_date": "2026-10-21"
     },
@@ -735,6 +786,9 @@
     "ISRG:weekly": {
       "last_alert_date": "2026-10-09"
     },
+    "IX:daily": {
+      "last_alert_date": "2026-11-05"
+    },
     "JAZZ:daily": {
       "last_alert_date": "2026-10-08"
     },
@@ -817,7 +871,7 @@
       "last_alert_date": "2026-10-14"
     },
     "MBX:daily": {
-      "last_alert_date": "2026-10-23"
+      "last_alert_date": "2026-11-05"
     },
     "MC:daily": {
       "last_alert_date": "2026-11-04"
@@ -861,6 +915,9 @@
     "MGEE:daily": {
       "last_alert_date": "2026-11-04"
     },
+    "MGEE:weekly": {
+      "last_alert_date": "2026-11-06"
+    },
     "MGY:daily": {
       "last_alert_date": "2026-10-23"
     },
@@ -890,6 +947,9 @@
     },
     "MPWR:daily": {
       "last_alert_date": "2026-10-13"
+    },
+    "MSA:weekly": {
+      "last_alert_date": "2026-11-06"
     },
     "MSI:daily": {
       "last_alert_date": "2026-10-09"
@@ -941,6 +1001,9 @@
     },
     "NICE:daily": {
       "last_alert_date": "2026-10-14"
+    },
+    "NNI:daily": {
+      "last_alert_date": "2026-11-05"
     },
     "NOG:daily": {
       "last_alert_date": "2026-11-03"
@@ -998,6 +1061,9 @@
     },
     "OPCH:weekly": {
       "last_alert_date": "2026-10-09"
+    },
+    "ORI:daily": {
+      "last_alert_date": "2026-11-05"
     },
     "ORKA:daily": {
       "last_alert_date": "2026-10-16"
@@ -1098,6 +1164,9 @@
     "PRVA:daily": {
       "last_alert_date": "2026-11-04"
     },
+    "PRVA:weekly": {
+      "last_alert_date": "2026-11-06"
+    },
     "PTC:daily": {
       "last_alert_date": "2026-10-01"
     },
@@ -1107,8 +1176,14 @@
     "PTEN:daily": {
       "last_alert_date": "2026-11-04"
     },
+    "PTEN:weekly": {
+      "last_alert_date": "2026-11-06"
+    },
     "PUK:weekly": {
       "last_alert_date": "2026-11-06"
+    },
+    "PURR:daily": {
+      "last_alert_date": "2026-11-05"
     },
     "Q:daily": {
       "last_alert_date": "2026-09-22"
@@ -1171,7 +1246,7 @@
       "last_alert_date": "2026-11-04"
     },
     "RIG:weekly": {
-      "last_alert_date": "2026-10-02"
+      "last_alert_date": "2026-11-06"
     },
     "RKT:daily": {
       "last_alert_date": "2026-11-04"
@@ -1196,6 +1271,9 @@
     },
     "RXRX:daily": {
       "last_alert_date": "2026-10-26"
+    },
+    "RYAN:weekly": {
+      "last_alert_date": "2026-11-06"
     },
     "RYTM:daily": {
       "last_alert_date": "2026-11-04"
@@ -1228,7 +1306,7 @@
       "last_alert_date": "2026-11-06"
     },
     "SII:daily": {
-      "last_alert_date": "2026-09-28"
+      "last_alert_date": "2026-11-05"
     },
     "SIMO:daily": {
       "last_alert_date": "2026-10-14"
@@ -1241,6 +1319,9 @@
     },
     "SLB:daily": {
       "last_alert_date": "2026-11-04"
+    },
+    "SLF:daily": {
+      "last_alert_date": "2026-11-05"
     },
     "SLNHP:daily": {
       "last_alert_date": "2026-10-05"
@@ -1262,6 +1343,9 @@
     },
     "SMCI:weekly": {
       "last_alert_date": "2026-10-16"
+    },
+    "SMFG:daily": {
+      "last_alert_date": "2026-11-05"
     },
     "SMMT:daily": {
       "last_alert_date": "2026-09-21"
@@ -1446,6 +1530,9 @@
     "VCYT:daily": {
       "last_alert_date": "2026-10-06"
     },
+    "VCYT:weekly": {
+      "last_alert_date": "2026-11-06"
+    },
     "VECO:daily": {
       "last_alert_date": "2026-10-13"
     },
@@ -1471,7 +1558,7 @@
       "last_alert_date": "2026-11-03"
     },
     "VNOM:weekly": {
-      "last_alert_date": "2026-10-02"
+      "last_alert_date": "2026-11-06"
     },
     "VRDN:daily": {
       "last_alert_date": "2026-10-20"
@@ -1558,9 +1645,9 @@
       "last_alert_date": "2026-10-13"
     }
   },
-  "last_run": "2026-11-05T01:43:19.086970+00:00",
+  "last_run": "2026-11-06T01:46:03.025099+00:00",
   "last_scan": {
-    "scanned": 756,
-    "skipped": 17
+    "scanned": 766,
+    "skipped": 18
   }
 }
