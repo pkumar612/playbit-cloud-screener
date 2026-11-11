@@ -63,6 +63,9 @@
     "AEIS:daily": {
       "last_alert_date": "2026-09-25"
     },
+    "AFRM:weekly": {
+      "last_alert_date": "2026-11-13"
+    },
     "AGIO:weekly": {
       "last_alert_date": "2026-10-23"
     },
@@ -82,7 +85,7 @@
       "last_alert_date": "2026-10-20"
     },
     "ALC:daily": {
-      "last_alert_date": "2026-10-30"
+      "last_alert_date": "2026-11-10"
     },
     "ALC:weekly": {
       "last_alert_date": "2026-11-06"
@@ -312,6 +315,9 @@
     "BUSEP:daily": {
       "last_alert_date": "2026-11-06"
     },
+    "BWLP:daily": {
+      "last_alert_date": "2026-11-10"
+    },
     "BX:daily": {
       "last_alert_date": "2026-11-05"
     },
@@ -383,6 +389,9 @@
     },
     "CLS:daily": {
       "last_alert_date": "2026-10-13"
+    },
+    "CMBT:daily": {
+      "last_alert_date": "2026-11-10"
     },
     "CNC:weekly": {
       "last_alert_date": "2026-10-02"
@@ -474,6 +483,9 @@
     "DFTX:daily": {
       "last_alert_date": "2026-11-02"
     },
+    "DHT:daily": {
+      "last_alert_date": "2026-11-10"
+    },
     "DIOD:daily": {
       "last_alert_date": "2026-10-13"
     },
@@ -521,6 +533,9 @@
     },
     "EFSC:daily": {
       "last_alert_date": "2026-11-06"
+    },
+    "EFX:daily": {
+      "last_alert_date": "2026-11-10"
     },
     "ELAN:daily": {
       "last_alert_date": "2026-10-06"
@@ -1341,6 +1356,9 @@
     "RIG:weekly": {
       "last_alert_date": "2026-11-06"
     },
+    "RIOT:daily": {
+      "last_alert_date": "2026-11-10"
+    },
     "RKT:daily": {
       "last_alert_date": "2026-11-04"
     },
@@ -1502,6 +1520,9 @@
     },
     "STNE:daily": {
       "last_alert_date": "2026-10-05"
+    },
+    "STNG:daily": {
+      "last_alert_date": "2026-11-10"
     },
     "STRF:daily": {
       "last_alert_date": "2026-10-23"
@@ -1737,8 +1758,14 @@
     "WULF:daily": {
       "last_alert_date": "2026-09-21"
     },
+    "XENE:weekly": {
+      "last_alert_date": "2026-11-13"
+    },
     "XYZ:daily": {
       "last_alert_date": "2026-10-26"
+    },
+    "YETI:daily": {
+      "last_alert_date": "2026-11-10"
     },
     "YOU:daily": {
       "last_alert_date": "2026-10-15"
@@ -1762,9 +1789,9 @@
       "last_alert_date": "2026-10-13"
     }
   },
-  "last_run": "2026-11-10T03:46:21.418729+00:00",
+  "last_run": "2026-11-11T01:26:34.843709+00:00",
   "last_scan": {
-    "scanned": 1069,
-    "skipped": 24
+    "scanned": 1076,
+    "skipped": 23
   }
 }
