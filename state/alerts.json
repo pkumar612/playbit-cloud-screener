@@ -36,6 +36,9 @@
     "ACMR:daily": {
       "last_alert_date": "2026-10-08"
     },
+    "ACT:daily": {
+      "last_alert_date": "2026-11-13"
+    },
     "ADBE:daily": {
       "last_alert_date": "2026-10-22"
     },
@@ -528,6 +531,9 @@
     "DOCS:daily": {
       "last_alert_date": "2026-10-08"
     },
+    "DPZ:daily": {
+      "last_alert_date": "2026-11-13"
+    },
     "DSGX:weekly": {
       "last_alert_date": "2026-10-02"
     },
@@ -662,6 +668,12 @@
     },
     "FSV:weekly": {
       "last_alert_date": "2026-11-06"
+    },
+    "FTI:daily": {
+      "last_alert_date": "2026-11-13"
+    },
+    "GBCI:daily": {
+      "last_alert_date": "2026-11-13"
     },
     "GBDC:daily": {
       "last_alert_date": "2026-11-04"
@@ -806,6 +818,9 @@
     },
     "IBN:weekly": {
       "last_alert_date": "2026-10-02"
+    },
+    "IBP:daily": {
+      "last_alert_date": "2026-11-13"
     },
     "IBRX:weekly": {
       "last_alert_date": "2026-11-13"
@@ -1047,6 +1062,9 @@
     "META:daily": {
       "last_alert_date": "2026-10-22"
     },
+    "MFICL:daily": {
+      "last_alert_date": "2026-11-13"
+    },
     "MGEE:daily": {
       "last_alert_date": "2026-11-04"
     },
@@ -1227,6 +1245,9 @@
     "OXLCN:daily": {
       "last_alert_date": "2026-11-03"
     },
+    "OXLCO:daily": {
+      "last_alert_date": "2026-11-13"
+    },
     "OXY:daily": {
       "last_alert_date": "2026-11-04"
     },
@@ -1265,6 +1286,9 @@
     },
     "PFE:weekly": {
       "last_alert_date": "2026-10-16"
+    },
+    "PFS:daily": {
+      "last_alert_date": "2026-11-13"
     },
     "PHG:daily": {
       "last_alert_date": "2026-10-22"
@@ -1686,6 +1710,9 @@
     "U:weekly": {
       "last_alert_date": "2026-09-25"
     },
+    "UAL:daily": {
+      "last_alert_date": "2026-11-13"
+    },
     "UCTT:daily": {
       "last_alert_date": "2026-10-02"
     },
@@ -1736,6 +1763,9 @@
     },
     "VICR:daily": {
       "last_alert_date": "2026-10-15"
+    },
+    "VIR:daily": {
+      "last_alert_date": "2026-11-13"
     },
     "VIST:daily": {
       "last_alert_date": "2026-11-02"
@@ -1849,12 +1879,12 @@
       "last_alert_date": "2026-11-06"
     },
     "ZLAB:daily": {
-      "last_alert_date": "2026-10-13"
+      "last_alert_date": "2026-11-13"
     }
   },
-  "last_run": "2026-11-13T02:04:56.281312+00:00",
+  "last_run": "2026-11-14T01:39:25.183909+00:00",
   "last_scan": {
-    "scanned": 1078,
+    "scanned": 1066,
     "skipped": 23
   }
 }
